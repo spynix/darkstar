@@ -1362,13 +1362,18 @@ namespace petutils
             LoadAutomatonStats((CCharEntity*)PMaster, PPet, g_PPetList.at(PetID)); //temp
         }
 
-		FinalizePetStatistics(PMaster, PPet);
-		PPet->PetSkills = battleutils::GetMobSkillsByFamily(PPet->m_Family);
-		PPet->status = STATUS_NORMAL;
-		PPet->m_ModelSize += g_PPetList.at(PetID)->size;
-		PPet->m_EcoSystem = g_PPetList.at(PetID)->EcoSystem;
+        FinalizePetStatistics(PMaster, PPet);
+				PPet->PetSkills = battleutils::GetMobSkillsByFamily(PPet->m_Family);
+				PPet->status = STATUS_NORMAL;
+				PPet->m_ModelSize += g_PPetList.at(PetID)->size;
+				PPet->m_EcoSystem = g_PPetList.at(PetID)->EcoSystem;
 
-        PMaster->PPet = PPet;
+				if (PMaster->PBCNM) {
+					PPet->PBCNM = PMaster->PBCNM;
+					PPet->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_BATTLEFIELD, EFFECT_BATTLEFIELD, PPet->PBCNM->getID(), 0, 0), true);
+				}
+
+				PMaster->PPet = PPet;
     }
 
 	void LoadWyvernStatistics(CBattleEntity* PMaster, CPetEntity* PPet, bool finalize) {
